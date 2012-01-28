@@ -25,9 +25,8 @@ class Snippetslib extends Ab_LibBase {
 		parent::__construct();
 		
 		// setup the pathing to all required directories.
-		$this->tmpl_basepath = $this->EE->config->slash_item('tmpl_file_basepath') . $this->EE->config->slash_item('site_short_name');
-		$this->sn_path = $this->tmpl_basepath . ( $this->EE->config->slash_item('snippetssync_sn_folder') ? $this->EE->config->slash_item('snippetssync_sn_folder') : "snippets/" );
-		$this->gv_path = $this->tmpl_basepath . ( $this->EE->config->slash_item('snippetssync_gv_folder') ? $this->EE->config->slash_item('snippetssync_gv_folder') : "global_variables/" );
+		$this->sn_path = $this->EE->config->slash_item('snippet_file_basepath') . $this->EE->config->slash_item('site_short_name');
+		$this->gv_path = $this->EE->config->slash_item('globalvar_file_basepath') . $this->EE->config->slash_item('site_short_name');
 	}
 
 	public function verify_settings()
@@ -40,7 +39,7 @@ class Snippetslib extends Ab_LibBase {
 		}
 		else
 		{
-			if(!($this->tmpl_basepath != $this->EE->config->slash_item('site_short_name') && file_exists($this->tmpl_basepath)))
+			if(!($this->sn_path != $this->EE->config->slash_item('site_short_name') && file_exists($this->tmpl_basepath)))
 			{
 				$this->error_message = 'Template basepath not defined - or not found ('.$this->tmpl_basepath.')';
 				return FALSE;
@@ -49,9 +48,9 @@ class Snippetslib extends Ab_LibBase {
 		
 		
 		// check that parent dir is writeable.
-		if ( substr(sprintf('%o', fileperms( $this->tmpl_basepath )) , -4) < DIR_WRITE_MODE )
+		if ( substr(sprintf('%o', fileperms( $this->sn_path )) , -4) < DIR_WRITE_MODE )
 		{
-			show_error( "Your template directory (".$this->tmpl_basepath.") needs to be writable." );
+			show_error( "Your template directory (".$this->sn_path.") needs to be writable." );
 		}
 		
 		// check if the global_vars and snippets dirs exists, else create them now.
