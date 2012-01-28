@@ -54,12 +54,15 @@ class Snippetssync_ext extends Ab_ExtBase {
 
     public function on_sessions_start($ref)
     {
-        $this->EE->load->config('snippetssync');
-        if(!$this->EE->config->item('snippetssync_production_mode_override') && !$this->EE->config->item('snippetssync_production_mode'))
-        {
-            $this->EE->load->library('snippetslib');
-            $success = $this->EE->snippetslib->sync_all();
-        }
+    	if($this->EE->session->userdata['group_id'] == 1 OR $this->EE->config->item('debug') > 1) {
+    	// don't do ANYTHING unless $debug is set to 2 OR user is logged in as superadmin
+        	$this->EE->load->config('snippetssync');
+        	if(!$this->EE->config->item('snippetssync_production_mode_override') && !$this->EE->config->item('snippetssync_production_mode'))
+        	{
+        	    $this->EE->load->library('snippetslib');
+        	    $success = $this->EE->snippetslib->sync_all();
+        	}
+    	}
     }
 
 }
